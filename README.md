@@ -1,65 +1,92 @@
-# URL Shortener Backend
+# URL Shortener Backend 🚀
 
-A production-style URL shortening service built using Spring Boot, PostgreSQL, Redis and Docker.
+A production-style URL shortening service built using Spring Boot, PostgreSQL, Redis, JWT Authentication and Docker.
 
-## Features
+This application allows users to create short URLs, redirect users using short codes, track clicks and manage URL expiration.
 
-- Create short URLs
-- Redirect using short code
-- Click tracking
-- Expiry support
-- JWT Authentication
-- PostgreSQL persistence
-- Redis caching
-- Dockerized deployment
+---
 
+# Features
 
-## Tech Stack
+✅ Create short URLs  
+✅ Generate unique short codes  
+✅ Redirect using short codes  
+✅ Click tracking  
+✅ URL expiry management  
+✅ JWT Authentication  
+✅ Refresh Token Support  
+✅ Role Based Authorization  
+✅ Redis Caching  
+✅ Scheduled URL Cleanup  
+✅ Dockerized Deployment
 
-Backend:
+---
+
+# Tech Stack
+
+## Backend
 - Java
 - Spring Boot
 - Spring Security
-- Hibernate/JPA
+- Hibernate / JPA
 
-
-Database:
+## Database
 - PostgreSQL
 
-
-Cache:
+## Cache
 - Redis
 
-
-DevOps:
+## DevOps
 - Docker
 - Docker Compose
 
+## API Documentation
+- Swagger OpenAPI
 
-## Architecture
+---
 
-Client
-|
-Spring Boot API
-|
-----------------
-|              |
-PostgreSQL    Redis
+# System Architecture
+            Client
+               |
+               |
+         Spring Boot API
+               |
+    -----------------------
+    |                     |
+PostgreSQL Database      Redis Cache
+    |                     |
+    -----------------------
+               |
+          URL Shortener Service
 
 
-## API Endpoints
+# Project Structure
+src/main/java/com/piyush/Urlshortener
 
-### Create Short URL
+├── controller
+├── service
+├── repository
+├── entity
+├── dto
+├── security
+├── exception
+├── scheduler
+└── config
 
+
+---
+
+# API Endpoints
+### Register User
 POST
+/api/auth/register
 
-/api/shorten
 
+### Login User
+POST
+/api/auth/login
 
-Request:
-
-```json
-{
-"url":"https://google.com",
-"expiryDays":7
-}
+# URL APIs
+## Create Short URL
+POST
+/api/url/shorten
