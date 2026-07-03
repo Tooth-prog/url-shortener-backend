@@ -8,18 +8,25 @@ import com.piyush.Urlshortener.entity.Url;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import org.springframework.http.ResponseEntity;
 import java.net.URI;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/v1")
 @RequiredArgsConstructor
+@Tag(name = "URL Management", description = "Endpoints for managing URLs")
 
 public class UrlController {
     private final UrlService urlService;
+
+    private static final Logger log = LoggerFactory.getLogger(UrlController.class);
 
     @Operation(summary = "Shorten a URL", description = "Creates a short URL with optional custom code and expiry.")
     @PostMapping("/shorten")
@@ -33,7 +40,7 @@ public class UrlController {
 
         return new UrlResponse(
                 url.getShortCode(),
-                "http://localhost:8080/api/" + url.getShortCode(),
+                "http://localhost:8080/api/v1/" + url.getShortCode(),
                 url.getExpiryDate()
         );
     }
@@ -51,16 +58,21 @@ public class UrlController {
     }
 
     @GetMapping("/analytics/{shortCode}")
-    public Url analytics(
-            @PathVariable String shortCode) {
+    public UrlStatsResponse analytics(@PathVariable String shortCode) {
 
-        return urlService.getAnalytics(shortCode);
+        Url url = urlService.getAnalytics(shortCode);
+        return new UrlStatsResponse(
+                url.getOriginalUrl(),
+                url.getClickCount(),
+                url.getCreatedAt(),
+                url.getExpiryDate()
+        );
     }
 
     @GetMapping("/stats/{code}")
     public UrlStatsResponse stats(@PathVariable String code) {
 
-        Url url = urlService.getOriginalUrl(code);
+        Url url = urlService.getAnalytics(code);
 
         return new UrlStatsResponse(
                 url.getOriginalUrl(),

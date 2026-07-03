@@ -1,23 +1,18 @@
 package com.piyush.Urlshortener.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
 import java.time.LocalDateTime;
 
+@Getter
+@AllArgsConstructor
 public class ErrorResponse {
 
+    private int status;
+
     private String message;
+
     private LocalDateTime timestamp;
 
-    public ErrorResponse(String message,
-                         LocalDateTime timestamp) {
-        this.message = message;
-        this.timestamp = timestamp;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public LocalDateTime getTimestamp() {
-        return timestamp;
-    }
 }

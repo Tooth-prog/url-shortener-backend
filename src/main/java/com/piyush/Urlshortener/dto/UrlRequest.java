@@ -5,6 +5,9 @@ import jakarta.validation.constraints.Pattern;
 import lombok.*;
 import org.hibernate.validator.constraints.URL;
 
+
+import io.swagger.v3.oas.annotations.media.Schema;
+
 @Data
 
 @Getter
@@ -14,6 +17,8 @@ import org.hibernate.validator.constraints.URL;
 public class UrlRequest {
 
     @NotBlank(message = "URL cannot be empty")
+    @Schema(description = "The original URL to be shortened")
+
     @URL(message = "Please provide a valid URL")
     @Pattern(regexp = "^(http|https)://.*$", message = "URL must start with http:// or https://")
     private String url;

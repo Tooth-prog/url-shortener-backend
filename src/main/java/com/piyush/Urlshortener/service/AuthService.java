@@ -8,11 +8,14 @@ import com.piyush.Urlshortener.entity.Role;
 import com.piyush.Urlshortener.entity.User;
 import com.piyush.Urlshortener.exception.InvalidCredentialsException;
 import com.piyush.Urlshortener.exception.UserNotFoundException;
+import com.piyush.Urlshortener.exception.UserAlreadyExistsException;
 import com.piyush.Urlshortener.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
@@ -28,11 +31,19 @@ public class AuthService {
 
     public UserResponse register(RegisterRequest request) {
 
+        if (userRepository.findByEmail(request.getEmail()).isPresent()) {
+            throw new UserAlreadyExistsException("Email is already registered");
+        }
+        if (userRepository.findByUsername(request.getUsername()).isPresent()) {
+            throw new UserAlreadyExistsException("Username is already taken");
+        }
+
         User user = User.builder()
                 .username(request.getUsername())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(Role.USER)
+                .createdAt(LocalDateTime.now())
                 .build();
 
         User savedUser = userRepository.save(user);
@@ -62,7 +73,7 @@ public class AuthService {
 
 
         String accessToken =
-                jwtService.generateToken(user.getEmail());
+                jwtService.generateToken(user.getEmail(), user.getRole().name());
 
 
 

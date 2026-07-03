@@ -80,12 +80,11 @@ public class AuthController {
                 .verifyExpiration(refreshToken);
 
 
-
+        User user = refreshToken.getUser();
         String newAccessToken =
                 jwtService.generateToken(
-                        refreshToken
-                                .getUser()
-                                .getEmail()
+                        user.getEmail(),
+                        user.getRole().name()
                 );
 
 

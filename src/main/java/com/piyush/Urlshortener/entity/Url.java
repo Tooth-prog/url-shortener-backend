@@ -1,12 +1,17 @@
 package com.piyush.Urlshortener.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "urls")
+@Table(name = "urls", indexes = {
+        @Index(name = "idx_urls_short_code", columnList = "shortCode", unique = true),
+        @Index(name = "idx_urls_expiry_date", columnList = "expiryDate"),
+        @Index(name = "idx_urls_original_url", columnList = "originalUrl")
+})
 @Getter
 @Setter
 @NoArgsConstructor
@@ -35,5 +40,6 @@ public class Url {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @JsonIgnore
     private User user;
 }
