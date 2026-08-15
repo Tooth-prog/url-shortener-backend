@@ -1,4 +1,4 @@
-# URL Shortener Backend 🚀
+# URL Shortener 🚀
 
 A production-style URL shortening service built using Spring Boot, PostgreSQL, Redis, JWT Authentication and Docker.
 
